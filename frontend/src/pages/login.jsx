@@ -1,129 +1,105 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+export default function Login() {
+  const [isPatient, setIsPatient] = useState(true);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
-  const handleSubmit = (e) => {
+  const handleToggle = (type) => {
+    setIsPatient(type === 'patient');
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleLogin = (e) => {
     e.preventDefault();
-    console.log("Username:", username);
-    console.log("Password:", password);
-    console.log("Remember Me:", rememberMe);
+    console.log('Login attempt:', {
+      role: isPatient ? 'patient' : 'doctor',
+      email: formData.email,
+      password: formData.password,
+    });
+    // You can add your login logic or API call here
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 font-sans">
-      {/* Header */}
-      <div className="w-full flex justify-between items-center p-4 bg-white shadow-md">
-        <div className="flex items-center text-2xl font-bold text-green-500">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuEqK28hOWwCczIFo_areqwwrgU9P4JAeSdg&s"
-            alt="MediCare Logo"
-            className="w-10 h-10 mr-2"
-          />
-          MediCare
-        </div>
-        <div className="flex gap-4">
-          <button className="px-4 py-2 bg-gray-200 text-gray-700 font-bold rounded-md">
-            Login
-          </button>
-          <button className="px-4 py-2 bg-green-500 text-white font-bold rounded-md">
-            Register
-          </button>
-        </div>
-      </div>
-
-      {/* Login Form */}
-      <div className="bg-white p-8 rounded-lg w-full max-w-md mt-12 shadow-lg text-center">
-        <h2 className="text-2xl font-bold mb-2">Sign into your account</h2>
-        <p className="text-gray-500 text-sm mb-6">
-          Enter your credentials to access your account
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="p-8 bg-white shadow-lg rounded-lg w-96">
+        <h2 className="text-2xl font-bold mb-2 text-center text-gray-800">Welcome Back</h2>
+        <p className="text-sm text-gray-500 mb-6 text-center">
+          Enter your credentials to sign in to your account
         </p>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4 text-left">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="username"
-            >
-              Username
+
+        <div className="flex justify-between mb-6 gap-2">
+          <button
+            onClick={() => handleToggle('patient')}
+            className={`flex-1 py-2 rounded-md text-gray-700 font-medium transition-colors duration-200 ${
+              isPatient ? 'bg-[#d1e7dd]' : 'bg-[#e6f0fa]'
+            }`}
+          >
+            Patient
+          </button>
+          <button
+            onClick={() => handleToggle('doctor')}
+            className={`flex-1 py-2 rounded-md text-gray-700 font-medium transition-colors duration-200 ${
+              !isPatient ? 'bg-[#d1e7dd]' : 'bg-[#e6f0fa]'
+            }`}
+          >
+            Doctor
+          </button>
+        </div>
+
+        <form className="space-y-4" onSubmit={handleLogin}>
+          <div>
+            <label htmlFor="email" className="block text-sm text-gray-700 mb-1 text-left">
+              Email
             </label>
             <input
-              type="text"
-              id="username"
-              className="w-full p-2 border rounded-md"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
               required
+              className="w-full p-2 bg-[#f0f4ff] border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
-          <div className="mb-4 text-left">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="password"
-            >
+          <div>
+            <label htmlFor="password" className="block text-sm text-gray-700 mb-1 text-left">
               Password
             </label>
             <input
               type="password"
               id="password"
-              className="w-full p-2 border rounded-md"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
               required
+              className="w-full p-2 bg-[#f0f4ff] border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
-          </div>
-          <div className="flex justify-between items-center mb-6 text-sm">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-                className="mr-2"
-              />
-              <label htmlFor="rememberMe">Remember Me</label>
-            </div>
-            <a
-              href="/forgot-password"
-              className="text-orange-500 hover:underline"
-            >
-              Forgot password?
-            </a>
           </div>
           <button
             type="submit"
-            className="w-full bg-orange-500 text-white py-2 rounded-md font-bold hover:bg-orange-600"
+            className="w-full flex justify-center items-center p-3 bg-[#ff9500] text-white rounded-md hover:bg-[#e68600] transition-colors duration-200"
           >
-            Sign In
+            Sign In <span className="ml-2">→</span>
           </button>
         </form>
 
-        {/* Google Sign-In */}
-        <div className="my-4">
-          <button
-            type="button"
-            className="flex items-center justify-center gap-2 w-full py-2 border rounded-md bg-white hover:bg-gray-100"
-          >
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaa2hwiG4o2vVy3yYZKTBDlqkTuQ0n3KEL2w&s"
-              alt="Google"
-              className="w-5 h-5"
-            />
-            Continue with Google
-          </button>
-        </div>
-
-        {/* Register Link */}
-        <p className="text-gray-500 text-sm">
-          Don't have an account?{" "}
-          <a href="/register" className="text-orange-500 hover:underline">
-            Register now
-          </a>
+        <p className="mt-4 text-center text-sm text-gray-500">
+          Don’t have an account?{' '}
+          <Link to="/register" className="text-blue-500 hover:underline">
+            Register
+          </Link>
         </p>
       </div>
     </div>
   );
-};
-
-export default Login;
+}
