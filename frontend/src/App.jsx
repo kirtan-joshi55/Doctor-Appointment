@@ -6,6 +6,8 @@ import AboutUsSection from "./pages/About us section/AboutUsSection";
 import TestimonialsV1 from "./pages/Testimonial/TestimonialsV1";
 import InputDesign from "./pages/Section/InputDesign";
 import FooterSection from "./pages/Footer Section/FooterSection"
+import Settings from './pages/Settings'
+
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
       <TestimonialsV1 />
       <InputDesign />
       <FooterSection />
+      <Settings />
     </div>
   );
 }
